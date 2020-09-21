@@ -1,0 +1,43 @@
+#
+# https://gitlab.com/gitlab-org/gitlab-foss/tree/master/lib/gitlab/ci/templates/Nodejs.gitlab-ci.yml
+#
+image: node:latest
+
+# Cache modules in between jobs
+cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+    - node_modules/
+
+before_script:
+    - npm install
+
+build_stage :
+    image: tiangolo/node-frontend:10
+    stage: build
+    script:
+        - npm install
+        - npm run ng build --prod
+    when: on_success
+
+e2e_tests :
+    image : node:latest
+    stage: test
+    script:
+        # - npm run ng e2e
+        - echo "No e2e testing yet"
+
+unit_test:
+    image: node:latest
+    stage : test
+    script :
+        # - npm run ng test
+        - echo "No unit testing yet"
+
+deployment_stage:
+    stage: deploy
+    # image: nginx
+    script:
+        # - mv ./dist/netflix/ /usr/share/nginx/html/
+        # - service nginx start
+        - echo "Configure deployement here"
